@@ -81,14 +81,15 @@ function AllUserVacations(): JSX.Element {
     vacationActions
       .getAllVacationsPagination(pageNumber, 2)
       .then((res) => {
-        setVacations(res);
+        let result = res.map((item)=>({...item, isActive: false}));
+        // setVacations(result);
         res.map((vacation) => {
           vacationActions.getFollowers(vacation.id).then((followers) => {
             vacation.followers = followers.length;
           });
         });
-        console.log(res);
-        setVacations(res);
+        console.log("result:",result);
+        setVacations(result);
         getOneUser();
       })
       .catch((err) => console.log(err));
@@ -158,6 +159,8 @@ function AllUserVacations(): JSX.Element {
                 <Card variant="outlined">
                   <IconButton>
                     <ThumbUpIcon
+                      style={vacation.isActive ? {color: "blue"} : {color: "black"} }
+                    // <span class="material-icons" style="color: rgb(0, 0, 255);">thumb_up_off_alt</span>
                       onClick={() => {
                         console.log("isActive", isActive);
 
@@ -186,6 +189,7 @@ function AllUserVacations(): JSX.Element {
                             })
 
                             .catch(() => {
+                              setIsActive(!isActive)
                               vacationActions
                                 .unFollow(userId, vacation.id)
                                 .then((userVacations) => {

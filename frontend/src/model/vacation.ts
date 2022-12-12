@@ -7,6 +7,7 @@ class Vacation {
   end_date!: Date;
   price!: number;
   followers!:number;
+  isActive!:boolean;
 }
 
 export default Vacation;

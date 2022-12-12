@@ -27,7 +27,10 @@ function Register(): JSX.Element {
       users.map((user) => {
         console.log("user", user);
         console.log("value", value);
-        let english = /^[A-Za-z0-9]*$/;
+        let english = /^[A-Za-z0-9]+$/;
+        var nameValid = /^[a-zA-Z ]{2,30}$/;
+        var passValid =
+          /^(?=.*[0-9])(?=.*[!@#$%^&*])[a-zA-Z0-9!@#$%^&*]{6,16}$/;
 
         if (
           user.user_name === value.user_name.replace(/\s+/g, "") &&
@@ -48,9 +51,9 @@ function Register(): JSX.Element {
           console.log("2nd if");
           throw Swal.fire("fill Out All the Fields ✍️");
         } else if (
-          english.test(value.user_name) &&
-          english.test(value.first_name) &&
-          english.test(value.last_name) &&
+          nameValid.test(value.first_name) &&
+          nameValid.test(value.last_name) &&
+          passValid.test(value.password) &&
           user.user_name !== value.user_name.replace(/\s+/g, "") &&
           user.password !== value.password.replace(/\s+/g, "")
         ) {
@@ -62,7 +65,13 @@ function Register(): JSX.Element {
           }
         } else if (user.user_name === value.user_name.replace(/\s+/g, "")) {
           return Swal.fire("User name already exists");
-        } else {
+        } else if (
+          !english.test(value.user_name) ||
+          !english.test(value.first_name) ||
+          !english.test(value.last_name)
+        ) {
+          console.log("english text:", english.test(value.user_name));
+
           console.log("4th if");
           return Swal.fire("Write only in English Letters");
         }
