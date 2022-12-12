@@ -76,15 +76,16 @@ function Register(): JSX.Element {
           return Swal.fire("Write only in English Letters");
         }
       });
+      addUser(value);
+      navigate("/api/user/vacations", {
+        state: {
+          user: value,
+        },
+      });
       if (validationCount === users.length) {
-        console.log("count", validationCount);
-        console.log("userLength", users.length);
-        addUser(value);
-        navigate("/api/user/vacations", {
-          state: {
-            user: value,
-          },
-        });
+        // console.log("count", validationCount);
+        // console.log("userLength", users.length);
+        // });
       }
     } catch (err: any) {
       console.log(err);
